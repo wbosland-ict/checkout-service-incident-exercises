@@ -23,6 +23,10 @@ flowchart LR
 - **payment-gateway** — Third-party payment API. Has a published rate
   limit of **300 requests/minute per client**. checkout-service has a
   retry policy: 3 retries with 200ms fixed backoff on timeout or 5xx.
+  checkout-service sends its request ID in the `X-Request-ID` header on
+  every call; payment-gateway logs it as `req_id`, so requests can be
+  matched across both logs. Payment-gateway logs are exported from the
+  provider's merchant dashboard.
 - **inventory-service** — Internal service, not implicated in this
   incident (included for completeness).
 - **order-notification-service** — Sends confirmation emails/SMS after a
@@ -39,4 +43,5 @@ flowchart LR
 | payment-gateway error rate | < 0.2% |
 | Checkout success rate | ~99.5% |
 
-Keep this baseline handy when comparing against the metrics in `data/metrics/`.
+Keep this baseline handy when comparing against the metrics in
+`checkout-service-incident-files/checkout-service-metrics-and-deploy-history/`.

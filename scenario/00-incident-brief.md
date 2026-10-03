@@ -1,53 +1,75 @@
 # Incident Brief
 
 **Company:** ShopFast (fictional e-commerce platform)
-**Your role:** On-call SRE
-**Time:** 10:07 UTC, Tuesday
+**Your role:** Service engineer in operator group *SRE – Checkout Platform*
+**Time:** 10:20 UTC, Tuesday 2026-07-07 (all times in this workshop are UTC)
 
 ---
 
-## The alert
+## How work reaches you
 
-You are paged by PagerDuty (an on-call alerting/incident-management tool that
-notifies engineers when monitoring systems detect a problem):
+At ShopFast, work follows the same flow as in our own organisation:
 
-> **[SEV-2] High latency & elevated error rate — checkout-service**
-> p95 latency > 2000ms for 5+ minutes. 5xx rate > 5%.
-> Runbook: `data/runbooks/checkout-service-runbook.md`
+```mermaid
+flowchart LR
+    SD["Service desk<br/>registers incident<br/>in TopDesk"] --> INC["Incident<br/>assigned to you"]
+    INC -->|"service restored"| CLOSE["Incident closed"]
+    INC -->|"solved with a workaround,<br/>long-term fix needed"| PRB["Problem registered<br/>in TopDesk"]
+    PRB -->|"you pick it up and<br/>analyse it thoroughly"| SOL["Long-term solution"]
+    SOL --> RFC["Request for Change<br/>(rfc-template.docx)"]
+```
 
-Two minutes later, a second alert fires:
+- An **incident** is about restoring service as fast as safely possible.
+  A workaround is fine.
+- A **problem** is about finding and removing the underlying cause, so the
+  incident does not happen again.
+- A **change** (RFC) describes, plans, and justifies the long-term solution
+  so it can be reviewed and approved.
 
-> **[SEV-2] DB connection pool saturation — checkout-service-db**
-> Active connections at 100% of max pool size for 3+ minutes.
+## The incident
 
-Slack (a team messaging app used for real-time chat channels) `#incidents` is
-starting to light up:
+The service desk has just assigned you a TopDesk incident:
 
-> **#support-escalations:** "Getting a spike in tickets — customers say
-> checkout is stuck on 'Processing...' or shows a generic error. Anyone
-> looking at this?"
+> **I 2607 041 — Customers cannot complete checkout on webshop and app**
+> Priority: **High** · Operator group: SRE – Checkout Platform · Operator: you
 
-> **#eng-payments:** "payment-gateway is seeing a wave of 429s from
+Full record: `checkout-service-incident-files/checkout-service-topdesk/incident-I-2607-041.md`
+
+At the same time, Grafana alerts have been posting to the Teams channel
+*IT Operations > SRE Alerts*, and colleagues are posting in Teams:
+
+> **Service desk:** "Phones are lighting up. Customers say checkout is stuck
+> on 'Processing...' or shows a generic error. Some ask whether they've
+> been charged twice."
+
+> **Engineering > Payments:** "payment-gateway is seeing a wave of 429s from
 > checkout-service, way more than normal traffic would explain."
 
 ## What you know at the start
 
 - Checkout success rate has dropped from a normal ~99.5% to ~62% over the
-  last 15 minutes.
-- Customers are reporting failed or stuck checkouts on the website and app.
+  last 15–20 minutes.
+- Customers report failed or stuck checkouts on the website and app.
 - No known regional cloud provider issues (status pages are green).
-- The on-call channel has evidence available: alerts, logs, metrics, and
-  recent deploy history (see `data/`).
+- Evidence is available in `checkout-service-incident-files/`: alerts,
+  Teams excerpts, logs, metrics, deploy history, the runbook, and the
+  TopDesk records.
 
 ## Your task
 
-Using the data provided in this repo (and any AI assistant you have
-access to), work through the exercises in `exercises/` in order:
+Work through the exercises in `checkout-service-incident-exercises/exercises/`
+in order, using any AI assistant you have access to:
 
-1. **Triage** — figure out what's actually broken and how bad it is.
-2. **Root cause analysis** — figure out *why* it's broken.
-3. **Remediation** — decide and (on paper) execute a fix.
-4. **Postmortem & communications** — write up what happened and tell people.
+1. **Incident intake & triage**: what is broken, how bad is it, and does
+   the TopDesk classification fit?
+2. **Incident resolution**: restore service (a workaround is fine),
+   update and close the incident, and decide whether a problem must be
+   registered.
+3. **Problem analysis**: pick up the problem, find the root cause and
+   contributing factors, choose a long-term solution, and write a
+   blameless postmortem summary.
+4. **Change request**: fill in `rfc-template.docx` for the long-term
+   solution.
 
-Treat this like a real incident: skim fast, form hypotheses, verify against
-evidence, and don't be afraid to be wrong and correct course.
+Treat this like real work: skim fast, form hypotheses, check them against
+the evidence, and don't be afraid to be wrong and correct course.
