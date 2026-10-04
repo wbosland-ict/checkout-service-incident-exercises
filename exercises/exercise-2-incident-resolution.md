@@ -1,8 +1,8 @@
 # Exercise 2: Incident Resolution with AI
 
-**Time box:** ~40 minutes
+**Time box:** ~40 minutes\
 **TopDesk phase:** Incident `I 2607 041`, status *In progress* → *Closed*
-(and, if needed, a new problem registered)
+(and, if needed, a new problem registered)\
 **Goal:** Use AI to quickly find what triggered the incident, restore
 service safely, record what you did in TopDesk, and decide whether the
 fix is permanent or a workaround.
@@ -17,16 +17,16 @@ two related critical alerts (latency/errors + DB pool saturation) fired
 close together. You now also have these files in
 `checkout-service-incident-files/`:
 
-- `checkout-service-metrics-and-deploy-history/`
+- `metrics-and-deploy-history/`
   - `deploy-history.md`
   - `checkout_latency_p95.csv`, `db_connection_pool.csv`,
     `payment_gateway_calls.csv`: metrics during the incident
   - `post-rollback-recovery.csv`: metrics during and after the rollback
     (for Part B, step 4)
-- `checkout-service-runbook/`
+- `runbook/`
   - `checkout-service-runbook.md`
-- `checkout-service-topdesk/`
-  - `problem-template.md`: for registering a problem in Part C
+- `topdesk-problem/`
+  - `template.md`: for registering a problem in Part C
 
 You probably don't need to point the AI at each file by name. A modern AI
 coding assistant can explore the working directory and find the relevant
@@ -63,7 +63,7 @@ wrong") before listing file paths.
      5–10 minutes after the rollback to confirm it worked, and which
      signals would tell you it didn't.
 4. The rollback to `v2.13.4` has been executed (10:26–10:28 UTC). The
-   results are in `checkout-service-metrics-and-deploy-history/post-rollback-recovery.csv`.
+   results are in `metrics-and-deploy-history/post-rollback-recovery.csv`.
    Check them against your verification checklist: did the rollback
    work, and does the recovery follow the rollout?
 
@@ -80,7 +80,7 @@ wrong") before listing file paths.
    - Can the team ship the next release as planned?
 3. If it's a workaround, write the **brief description and problem
    description** you would use to register a **problem** in TopDesk and
-   link it to I 2607 041 (use `problem-template.md`; for now, fill in
+   link it to I 2607 041 (use `topdesk-problem/template.md`; for now, fill in
    only the header, problem description and workaround sections).
 4. Draft a short closing message for the service desk (so they can tell
    callers) and a status-page update for customers. No jargon, no blame,

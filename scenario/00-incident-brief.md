@@ -1,10 +1,8 @@
 # Incident Brief
 
-**Company:** ShopFast (fictional e-commerce platform)
-**Your role:** Service engineer in operator group *SRE – Checkout Platform*
+**Company:** ShopFast (fictional e-commerce platform)\
+**Your role:** Service engineer in operator group *SRE – Checkout Platform*\
 **Time:** 10:20 UTC, Tuesday 2026-07-07 (all times in this workshop are UTC)
-
----
 
 ## How work reaches you
 
@@ -30,10 +28,10 @@ flowchart LR
 
 The service desk has just assigned you a TopDesk incident:
 
-> **I 2607 041 — Customers cannot complete checkout on webshop and app**
+> **I 2607 041 — Customers cannot complete checkout on webshop and app**\
 > Priority: **High** · Operator group: SRE – Checkout Platform · Operator: you
 
-Full record: `checkout-service-incident-files/checkout-service-topdesk/incident-I-2607-041.md`
+Full record: `checkout-service-incident-files/topdesk-incident/I-2607-041.md`
 
 At the same time, Grafana alerts have been posting to the Teams channel
 *IT Operations > SRE Alerts*, and colleagues are posting in Teams:

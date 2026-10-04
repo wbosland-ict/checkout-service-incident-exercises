@@ -1,8 +1,8 @@
 # Exercise 3: Problem Analysis with AI
 
-**Time box:** ~55 minutes
+**Time box:** ~55 minutes\
 **TopDesk phase:** Problem linked to `I 2607 041`, status *Registered* →
-*In analysis* → *Known error* → *Solution proposed*
+*In analysis* → *Known error* → *Solution proposed*\
 **Goal:** Use AI to analyse the problem thoroughly: generate root-cause
 hypotheses and test them against evidence, find the contributing factors,
 and choose a long-term solution, without trusting the first
@@ -17,7 +17,7 @@ pick up the problem you registered in Exercise 2. Production is stable on
 additional evidence that wasn't available during the incident, in
 `checkout-service-incident-files/`:
 
-- `checkout-service-problem-evidence/`
+- `problem-evidence/`
   - `pr-4821-diff.md`: the code change behind v2.14.0
   - `checkout-service-config.yaml`: pool, retry, and payment-gateway
     client configuration
@@ -28,7 +28,7 @@ additional evidence that wasn't available during the incident, in
 - Everything from Exercises 1 and 2 (logs, metrics, runbook, TopDesk
   records)
 
-Record your analysis in `checkout-service-topdesk/problem-template.md`.
+Record your analysis in `topdesk-problem/template.md`.
 
 ## Task
 

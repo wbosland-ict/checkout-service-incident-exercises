@@ -44,4 +44,4 @@ flowchart LR
 | Checkout success rate | ~99.5% |
 
 Keep this baseline handy when comparing against the metrics in
-`checkout-service-incident-files/checkout-service-metrics-and-deploy-history/`.
+`checkout-service-incident-files/metrics-and-deploy-history/`.

@@ -1,7 +1,7 @@
 # Exercise 1: Incident Intake & Triage with AI
 
-**Time box:** ~25 minutes
-**TopDesk phase:** Incident `I 2607 041`, status *Assigned* → *In progress*
+**Time box:** ~25 minutes\
+**TopDesk phase:** Incident `I 2607 041`, status *Assigned* → *In progress*\
 **Goal:** Use AI to turn a TopDesk ticket plus noisy, multi-source signals
 into a prioritised understanding of what is broken and how bad it is.
 
@@ -12,10 +12,10 @@ The service desk has just assigned incident **I 2607 041** to you. Read
 haven't already. You have access to these files in
 `checkout-service-incident-files/`:
 
-- `checkout-service-topdesk/`
-  - `incident-I-2607-041.md`: the TopDesk incident as registered by the
+- `topdesk-incident/`
+  - `I-2607-041.md`: the TopDesk incident as registered by the
     service desk
-- `checkout-service-payload-and-log-excerpts/`
+- `payload-and-log-excerpts/`
   - `monitoring-alerts.json`: 4 Grafana alerts posted to Teams within
     ~5 minutes
   - `teams-channel-excerpts.md`: messages from the Teams channels

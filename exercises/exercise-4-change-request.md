@@ -1,8 +1,8 @@
 # Exercise 4: Request for Change with AI
 
-**Time box:** ~35 minutes
+**Time box:** ~35 minutes\
 **TopDesk phase:** Problem *Solution proposed* → new change request
-linked to the problem and incident
+linked to the problem and incident\
 **Goal:** Use AI to turn your problem analysis into a complete,
 reviewable Request for Change, while you stay responsible for accuracy,
 risk assessment, and planning.
