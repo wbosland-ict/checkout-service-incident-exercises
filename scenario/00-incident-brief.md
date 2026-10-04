@@ -15,6 +15,7 @@ flowchart LR
     INC -->|"solved with a workaround,<br/>long-term fix needed"| PRB["Problem registered<br/>in TopDesk"]
     PRB -->|"you pick it up and<br/>analyse it thoroughly"| SOL["Long-term solution"]
     SOL --> RFC["Request for Change<br/>(rfc-template.docx)"]
+    RFC -->|"approved"| FIX["Fix implemented<br/>in the source code"]
 ```
 
 - An **incident** is about restoring service as fast as safely possible.
@@ -63,11 +64,11 @@ in order, using any AI assistant you have access to:
 2. **Incident resolution**: restore service (a workaround is fine),
    update and close the incident, and decide whether a problem must be
    registered.
-3. **Problem analysis**: pick up the problem, find the root cause and
-   contributing factors, choose a long-term solution, and write a
-   blameless postmortem summary.
-4. **Change request**: fill in `rfc-template.docx` for the long-term
-   solution.
+3. **Problem analysis & change request**: pick up the problem, find the
+   root cause and contributing factors, choose a long-term solution, and
+   fill in `rfc-template.docx` for it.
+4. **Fixing the source code**: implement the approved change in
+   `checkout-service-incident-sourcecode/`, with AI assistance.
 
 Treat this like real work: skim fast, form hypotheses, check them against
 the evidence, and don't be afraid to be wrong and correct course.

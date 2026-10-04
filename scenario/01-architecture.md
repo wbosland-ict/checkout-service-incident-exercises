@@ -15,8 +15,8 @@ flowchart LR
 
 - **checkout-service** — Owns the checkout flow: validates cart, reserves
   inventory, calls payment-gateway, writes the order. Deployed via CI/CD,
-  runs 12 pods behind the load balancer. Uses an ORM (Hibernate-style) to
-  read cart items from Postgres.
+  runs 12 pods behind the load balancer. An ASP.NET Core (.NET) service
+  using Entity Framework Core to read cart items from Postgres.
 - **cart-items DB** — Postgres database dedicated to checkout-service.
   Connection pool configured with `max_pool_size = 50` per the last
   capacity review (traffic has grown ~40% since then).

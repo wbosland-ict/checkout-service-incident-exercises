@@ -1,0 +1,99 @@
+# Exercise 4: Fixing the Source Code with AI
+
+**TopDesk phase:** Change `W 2607 012` approved → implementation\
+**Goal:** Use an AI coding assistant to implement the solution approved in
+the RFC (Exercise 3) directly in the `checkout-service` source code, with
+the engineer reviewing and understanding every change rather than
+accepting it blindly.
+
+> **Status: sample source repo and facilitator model answer ready; task
+> list still draft.** Remaining open item:
+>
+> - [ ] Pilot the task list end-to-end with an AI coding assistant and
+>   adjust the steps based on how long it actually takes.
+
+## Setup
+
+Your RFC `W 2607 012` from Exercise 3 has been approved. Now you implement
+it in `checkout-service`. You'll need:
+
+- The sample source repo: `checkout-service-incident-sourcecode/` (see its
+  `README.md` for build/test instructions). It is the real v2.14.0 code —
+  no comments or notes point out what's wrong; use your RFC and the
+  evidence files to scope the fix.
+- Your problem record and RFC from Exercise 3 (sections 2 and 3 describe
+  WHAT must change and HOW)
+- `problem-evidence/pr-4821-diff.md`: the diff that introduced the bug, as
+  a reference for what to undo/redo
+- `problem-evidence/checkout-service-config.yaml`: pool, retry, and
+  payment-gateway client settings relevant to the fix
+
+## Task (draft)
+
+1. Give the AI coding assistant the RFC's sections 2 and 3 and ask it to
+   propose a concrete implementation plan against the real source files,
+   **before** writing any code. Check the plan against the RFC scope.
+2. Implement the fix with AI assistance, matching what was scoped into the
+   RFC, for example:
+   - Restore efficient fetching for cart items + products (eager loading
+     via `.Include()`/`.ThenInclude()`, or a split query) instead of the
+     N+1 lazy-loaded navigation properties.
+   - Narrow the transaction scope in `CheckoutService.StartAsync()` so it
+     no longer wraps the inventory and payment-gateway remote calls.
+   - Harden the payment client: exponential backoff with jitter, no retry
+     on `429` without honouring `Retry-After`, a circuit breaker, and an
+     `Idempotency-Key` on charge requests.
+   - Add a query-count regression test using realistic cart sizes (4–11
+     items), so this class of bug is caught in CI next time.
+3. Ask the AI to explain each change and how it addresses the root cause
+   from your problem record. Don't accept a diff you can't explain
+   yourself.
+4. Run the test suite, including the new regression test. Confirm it
+   **fails** against the old (buggy) code path and **passes** after the
+   fix.
+5. Ask the AI to review its own diff critically: does it match the RFC
+   scope exactly (nothing extra, nothing missing)? Did it introduce any
+   new risk (e.g. a different N+1 elsewhere, a breaking API change)?
+6. Draft a short pull request description linking back to the RFC,
+   problem, and incident numbers, for a human reviewer.
+
+## Questions to answer
+
+- Did the AI's implementation match what was scoped in the RFC, or did it
+  add changes you didn't ask for?
+- What did you have to correct in the AI's code (correctness, style, a
+  missed edge case)?
+- Does the new regression test actually fail without the fix, and pass
+  with it?
+- What would you still want a human reviewer to check before merging?
+
+## Try these prompt angles
+
+- "Here are sections 2 and 3 of an approved RFC. Propose an implementation
+  plan against this codebase before writing any code. [paste RFC
+  sections]"
+- "Rewrite this repository method to fetch cart items and their products
+  in a single query instead of relying on lazy-loaded navigation
+  properties. Explain the trade-offs of `.Include()`/`.ThenInclude()` vs.
+  a split query vs. a projection here."
+- "Narrow this transaction scope so the database connection is not held
+  during the inventory and payment-gateway calls. What has to change for
+  lazy loading to still work?"
+- "Add exponential backoff with jitter to this payment client, stop
+  retrying on 429 unless `Retry-After` allows it, and add a circuit
+  breaker. Keep the existing method signatures."
+- "Write a test that fails if cart retrieval issues more than one SQL
+  query for a cart with N items."
+- "Review this diff as a strict code reviewer: does it match this RFC
+  scope exactly? Any risk it introduces that isn't mentioned in the RFC?"
+
+## Watch out for
+
+- Accepting a diff without understanding it; you own what gets merged.
+- Scope creep: the AI "improving" code beyond what the RFC covers.
+- Tests that would still pass even with the original bug present (a weak
+  regression test is worse than none, because it looks safe).
+- AI-invented library or API usage that doesn't match your actual stack,
+  framework version, or internal conventions.
+- Treating "tests are green" as proof the fix is complete; also check it
+  against the RFC's acceptance criteria and risk section.

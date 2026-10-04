@@ -1,6 +1,5 @@
 # Exercise 2: Incident Resolution with AI
 
-**Time box:** ~40 minutes\
 **TopDesk phase:** Incident `I 2607 041`, status *In progress* → *Closed*
 (and, if needed, a new problem registered)\
 **Goal:** Use AI to quickly find what triggered the incident, restore
