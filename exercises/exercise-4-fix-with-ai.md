@@ -6,8 +6,8 @@ the RFC (Exercise 3) directly in the `checkout-service` source code, with
 the engineer reviewing and understanding every change rather than
 accepting it blindly.
 
-> **Status: sample source repo and facilitator model answer ready; task
-> list still draft.** Remaining open item:
+> **Status: sample source repo and facilitator model answer ready.**
+> Remaining open item:
 >
 > - [ ] Pilot the task list end-to-end with an AI coding assistant and
 >   adjust the steps based on how long it actually takes.
@@ -23,17 +23,22 @@ it in `checkout-service`. You'll need:
   evidence files to scope the fix.
 - Your problem record and RFC from Exercise 3 (sections 2 and 3 describe
   WHAT must change and HOW)
-- `problem-evidence/pr-4821-diff.md`: the diff that introduced the bug, as
-  a reference for what to undo/redo
-- `problem-evidence/checkout-service-config.yaml`: pool, retry, and
-  payment-gateway client settings relevant to the fix
+- `checkout-service-incident-files/problem-evidence/pr-4821-diff.md`: the
+  diff that introduced the bug, as a reference for what to undo/redo
+- `checkout-service-incident-files/problem-evidence/checkout-service-config.yaml`:
+  pool, retry, and payment-gateway client settings relevant to the fix
 
-## Task (draft)
+## Task
 
 1. Give the AI coding assistant the RFC's sections 2 and 3 and ask it to
    propose a concrete implementation plan against the real source files,
    **before** writing any code. Check the plan against the RFC scope.
-2. Implement the fix with AI assistance, matching what was scoped into the
+2. **Write the regression test first, and watch it fail.** Add a
+   query-count test using realistic cart sizes (4–11 items) that asserts
+   cart retrieval doesn't issue one query per item. Run it against the
+   unchanged code and confirm it **fails**. A test you've never seen fail
+   proves nothing.
+3. Implement the fix with AI assistance, matching what was scoped into the
    RFC, for example:
    - Restore efficient fetching for cart items + products (eager loading
      via `.Include()`/`.ThenInclude()`, or a split query) instead of the
@@ -43,18 +48,15 @@ it in `checkout-service`. You'll need:
    - Harden the payment client: exponential backoff with jitter, no retry
      on `429` without honouring `Retry-After`, a circuit breaker, and an
      `Idempotency-Key` on charge requests.
-   - Add a query-count regression test using realistic cart sizes (4–11
-     items), so this class of bug is caught in CI next time.
-3. Ask the AI to explain each change and how it addresses the root cause
+4. Re-run the suite. The regression test from step 2 should now **pass**,
+   and the existing smoke test should still pass.
+5. Ask the AI to explain each change and how it addresses the root cause
    from your problem record. Don't accept a diff you can't explain
    yourself.
-4. Run the test suite, including the new regression test. Confirm it
-   **fails** against the old (buggy) code path and **passes** after the
-   fix.
-5. Ask the AI to review its own diff critically: does it match the RFC
+6. Ask the AI to review its own diff critically: does it match the RFC
    scope exactly (nothing extra, nothing missing)? Did it introduce any
    new risk (e.g. a different N+1 elsewhere, a breaking API change)?
-6. Draft a short pull request description linking back to the RFC,
+7. Draft a short pull request description linking back to the RFC,
    problem, and incident numbers, for a human reviewer.
 
 ## Questions to answer
@@ -72,6 +74,9 @@ it in `checkout-service`. You'll need:
 - "Here are sections 2 and 3 of an approved RFC. Propose an implementation
   plan against this codebase before writing any code. [paste RFC
   sections]"
+- "Write a test that fails if cart retrieval issues more than one SQL
+  query for a cart with N items. Don't change the production code yet — I
+  want to see the test fail first."
 - "Rewrite this repository method to fetch cart items and their products
   in a single query instead of relying on lazy-loaded navigation
   properties. Explain the trade-offs of `.Include()`/`.ThenInclude()` vs.
@@ -79,11 +84,10 @@ it in `checkout-service`. You'll need:
 - "Narrow this transaction scope so the database connection is not held
   during the inventory and payment-gateway calls. What has to change for
   lazy loading to still work?"
-- "Add exponential backoff with jitter to this payment client, stop
-  retrying on 429 unless `Retry-After` allows it, and add a circuit
-  breaker. Keep the existing method signatures."
-- "Write a test that fails if cart retrieval issues more than one SQL
-  query for a cart with N items."
+- "This payment client's retry policy matches the one in our config file.
+  Critique it against the incident timeline, then fix it: exponential
+  backoff with jitter, stop retrying on 429 unless `Retry-After` allows
+  it, add a circuit breaker, and make charges idempotent."
 - "Review this diff as a strict code reviewer: does it match this RFC
   scope exactly? Any risk it introduces that isn't mentioned in the RFC?"
 
