@@ -91,13 +91,20 @@ template has these sections:
    - Re-release the refactor with efficient fetching (eager loading via
      `.Include()`/`.ThenInclude()`, or split queries) and keep the DB
      transaction short (no remote calls inside it)
-   - Retry policy: exponential backoff with jitter, no retry on 429
-     without honouring `Retry-After`, circuit breaker, idempotency keys
+   - Retry policy: exponential backoff with jitter, honour
+     `Retry-After` on 429, circuit breaker, idempotency keys
    - Resize the connection pool with headroom for the traffic forecast
    - Ask payment-gateway to raise the rate limit
    - CI safeguards: query-count assertions, realistic test data, load test
-2. Choose the solution. Decide **what goes into the RFC** and what
-   becomes a separate follow-up action (with owner and target date).
+2. Choose the solution. The RFC covers two changes:
+   - **Eager-loading fix:** re-release the refactor with a single fetch
+     (`.Include()`/`.ThenInclude()`) and keep the DB transaction short
+     (no remote calls inside it).
+   - **Retry policy:** exponential backoff with jitter, honour
+     `Retry-After` on 429, circuit breaker, and idempotency keys.
+
+   Decide which of the other options become separate follow-up actions
+   (with owner and target date).
 3. Complete the problem record and set it to *Solution proposed*.
 
 ### Part D: Request for Change

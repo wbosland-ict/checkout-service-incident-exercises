@@ -32,16 +32,15 @@ it in `checkout-service`. You'll need:
    cart retrieval doesn't issue one query per item. Run it against the
    unchanged code and confirm it **fails**. A test you've never seen fail
    proves nothing.
-3. Implement the fix with AI assistance, matching what was scoped into the
-   RFC, for example:
-   - Restore efficient fetching for cart items + products (eager loading
-     via `.Include()`/`.ThenInclude()`, or a split query) instead of the
-     N+1 lazy-loaded navigation properties.
-   - Narrow the transaction scope in `CheckoutService.StartAsync()` so it
-     no longer wraps the inventory and payment-gateway remote calls.
-   - Harden the payment client: exponential backoff with jitter, no retry
-     on `429` without honouring `Retry-After`, a circuit breaker, and an
-     `Idempotency-Key` on charge requests.
+3. Implement the two changes from the RFC with AI assistance:
+   - **Eager-loading fix:** fetch cart items + products in a single query
+     with `.Include()`/`.ThenInclude()` instead of the N+1 lazy-loaded
+     navigation properties, and narrow the transaction scope in
+     `CheckoutService.StartAsync()` so it no longer wraps the inventory
+     and payment-gateway remote calls.
+   - **Retry policy:** harden the payment client with exponential backoff
+     with jitter, honour `Retry-After` on `429`, a circuit breaker, and
+     an `Idempotency-Key` on charge requests.
 4. Re-run the suite. The regression test from step 2 should now **pass**,
    and the existing smoke test should still pass.
 5. Ask the AI to explain each change and how it addresses the root cause
@@ -79,8 +78,8 @@ it in `checkout-service`. You'll need:
   lazy loading to still work?"
 - "This payment client's retry policy matches the one in our config file.
   Critique it against the incident timeline, then fix it: exponential
-  backoff with jitter, stop retrying on 429 unless `Retry-After` allows
-  it, add a circuit breaker, and make charges idempotent."
+  backoff with jitter, honour `Retry-After` on 429, add a circuit
+  breaker, and make charges idempotent."
 - "Review this diff as a strict code reviewer: does it match this RFC
   scope exactly? Any risk it introduces that isn't mentioned in the RFC?"
 
