@@ -1,0 +1,51 @@
+name: Release exercise bundles
+
+# Push a tag like v1.0 (or run manually with a tag) to publish one ZIP per
+# exercise as a GitHub Release. Content is taken from the main branch of the
+# files and sourcecode repos at the time the workflow runs.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to create or update (e.g. v1.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  bundles:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: exercises
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/checkout-service-incident-files
+          path: files
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/checkout-service-incident-sourcecode
+          path: sourcecode
+
+      - name: Build bundles
+        run: bash exercises/.github/scripts/build-bundles.sh exercises files sourcecode dist
+
+      - name: Publish release
+        working-directory: exercises
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" ../dist/*.zip --clobber
+          else
+            gh release create "$TAG" ../dist/*.zip --target "$GITHUB_SHA" \
+              --title "Workshop bundles $TAG" \
+              --notes "Download one ZIP per exercise and unzip each into the same folder."
+          fi
