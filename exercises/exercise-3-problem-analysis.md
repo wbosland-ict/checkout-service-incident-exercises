@@ -26,15 +26,17 @@ additional evidence that wasn't available during the incident, in
   - `payment-reconciliation.md`: Finance's findings on duplicate charges
   - `stakeholder-notes.md`: input from the product owner, release
     manager, DB/infra, and payments
+- `request-for-change/`
+  - `rfc-template.docx`: the organisation's Request for Change form,
+    which you'll fill in during Part D
 - Everything from Exercises 1 and 2 (logs, metrics, runbook, TopDesk
   records)
 
 Record your analysis in `topdesk-problem/template.md`.
 
 Once you've chosen a long-term solution (Part C), you'll fill in the
-organisation's RFC form in Part D: `request-for-change/rfc-template.docx`
-(in `checkout-service-incident-files/`). Make a copy first, e.g.
-`rfc-checkout-service-<your-name>.docx`. The template has these sections:
+organisation's RFC form in Part D (`rfc-template.docx`, listed above). The
+template has these sections:
 
 | Section | What it should contain for this case |
 |---|---|
@@ -104,9 +106,9 @@ organisation's RFC form in Part D: `request-for-change/rfc-template.docx`
    and the template's section list above. Ask it to draft text for each
    section.
    - If you're using an AI coding assistant that can run code (e.g.
-     GitHub Copilot CLI), you can ask it to fill in your copy of the
-     `.docx` directly (for example with `python-docx`). Check the result
-     in Word afterwards.
+     GitHub Copilot CLI), you can ask it to fill in `rfc-template.docx`
+     directly and save the result as a new file, so the template stays
+     intact. Check the result in Word afterwards.
    - Otherwise, have it draft the text and paste it into the form
      yourself.
 2. **Get the scope right.** Check that sections 2 and 3 cover only what
@@ -171,9 +173,9 @@ organisation's RFC form in Part D: `request-for-change/rfc-template.docx`
 - "Here is my TopDesk problem record and the sections of our RFC template.
   Draft the text for each section. Keep section 2 about WHAT changes and
   section 3 about HOW. [paste problem record + section list]"
-- "Fill in this copy of rfc-template.docx with the content we drafted.
-  Keep the existing layout; put text in the empty cells under each
-  heading."
+- "Fill in rfc-template.docx with the content we drafted and save it as
+  a new file. Keep the existing layout; put text in the empty cells under
+  each heading."
 - "Rewrite this risk section so each risk has a likelihood, impact,
   mitigation, and owner. Add a concrete rollback plan."
 - "Create a work breakdown structure with hour estimates for this change,
