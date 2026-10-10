@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Builds one ZIP per exercise containing only the files that exercise adds.
-# All ZIPs share the top-level folder "checkout-service-incident/", so participants
-# can unzip each one into the same place and the files add up.
+# Each ZIP contains checkout-service-incident-files/ and/or
+# checkout-service-incident-sourcecode/ at its root, matching the paths used in
+# the exercise docs. Participants unzip each one into the same folder and the
+# files add up.
 #
 # Usage: build-bundles.sh <files-dir> <sourcecode-dir> <out-dir>
 set -euo pipefail
@@ -12,7 +14,6 @@ mkdir -p "$3"
 OUT_DIR=$(cd "$3" && pwd)
 PYTHON=${PYTHON:-python3}
 
-ROOT=checkout-service-incident
 FILES=checkout-service-incident-files
 SOURCE=checkout-service-incident-sourcecode
 
@@ -36,13 +37,13 @@ copy() {
 }
 
 new_bundle() {
-  BUNDLE="$STAGING/$1/$ROOT"
+  BUNDLE="$STAGING/$1"
   mkdir -p "$BUNDLE"
 }
 
 finish_bundle() {
   rm -f "$OUT_DIR/$1.zip"
-  (cd "$STAGING/$1" && "$PYTHON" -m zipfile -c "$OUT_DIR/$1.zip" "$ROOT")
+  (cd "$STAGING/$1" && "$PYTHON" -m zipfile -c "$OUT_DIR/$1.zip" *)
   echo "built $OUT_DIR/$1.zip"
 }
 
