@@ -3,14 +3,13 @@
 # All ZIPs share the top-level folder "checkout-service-incident/", so participants
 # can unzip each one into the same place and the files add up.
 #
-# Usage: build-bundles.sh <exercises-dir> <files-dir> <sourcecode-dir> <out-dir>
+# Usage: build-bundles.sh <files-dir> <sourcecode-dir> <out-dir>
 set -euo pipefail
 
-EXERCISES_DIR=$(cd "$1" && pwd)
-FILES_DIR=$(cd "$2" && pwd)
-SOURCE_DIR=$(cd "$3" && pwd)
-mkdir -p "$4"
-OUT_DIR=$(cd "$4" && pwd)
+FILES_DIR=$(cd "$1" && pwd)
+SOURCE_DIR=$(cd "$2" && pwd)
+mkdir -p "$3"
+OUT_DIR=$(cd "$3" && pwd)
 PYTHON=${PYTHON:-python3}
 
 ROOT=checkout-service-incident
@@ -48,7 +47,6 @@ finish_bundle() {
 }
 
 new_bundle exercise-1
-copy "$EXERCISES_DIR/scenario" scenario
 copy "$FILES_DIR/topdesk-incident" "$FILES/topdesk-incident"
 copy "$FILES_DIR/payload-and-log-excerpts" "$FILES/payload-and-log-excerpts"
 finish_bundle exercise-1

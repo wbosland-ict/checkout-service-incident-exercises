@@ -37,7 +37,7 @@ jobs:
           path: sourcecode
 
       - name: Build bundles
-        run: bash exercises/.github/scripts/build-bundles.sh exercises files sourcecode dist
+        run: bash exercises/.github/scripts/build-bundles.sh files sourcecode dist
 
       - name: Publish release
         working-directory: exercises
