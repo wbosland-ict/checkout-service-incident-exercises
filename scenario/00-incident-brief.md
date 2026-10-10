@@ -66,7 +66,7 @@ in order, using any AI assistant you have access to:
    registered.
 3. **Problem analysis & change request**: pick up the problem, find the
    root cause and contributing factors, choose a long-term solution, and
-   fill in `rfc-template.docx` for it.
+   fill in `request-for-change/rfc-template.docx` for it.
 4. **Fixing the source code**: implement the approved change in
    `checkout-service-incident-sourcecode/`, with AI assistance.
 

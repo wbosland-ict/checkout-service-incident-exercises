@@ -32,8 +32,8 @@ additional evidence that wasn't available during the incident, in
 Record your analysis in `topdesk-problem/template.md`.
 
 Once you've chosen a long-term solution (Part C), you'll fill in the
-organisation's RFC form in Part D: `rfc-template.docx` (in the root of
-this workshop folder). Make a copy first, e.g.
+organisation's RFC form in Part D: `request-for-change/rfc-template.docx`
+(in `checkout-service-incident-files/`). Make a copy first, e.g.
 `rfc-checkout-service-<your-name>.docx`. The template has these sections:
 
 | Section | What it should contain for this case |
