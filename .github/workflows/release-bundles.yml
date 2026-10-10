@@ -46,6 +46,6 @@ jobs:
             gh release upload "$TAG" ../dist/*.zip --clobber
           else
             gh release create "$TAG" ../dist/*.zip --target "$GITHUB_SHA" \
-              --title "Workshop bundles $TAG" \
+              --title "Workshop Files $TAG" \
               --notes "Download one ZIP per exercise and unzip each into the same folder."
           fi
