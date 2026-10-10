@@ -6,15 +6,9 @@ the RFC (Exercise 3) directly in the `checkout-service` source code, with
 the engineer reviewing and understanding every change rather than
 accepting it blindly.
 
-> **Status: sample source repo and facilitator model answer ready.**
-> Remaining open item:
->
-> - [ ] Pilot the task list end-to-end with an AI coding assistant and
->   adjust the steps based on how long it actually takes.
-
 ## Setup
 
-Your RFC `W 2607 012` from Exercise 3 has been approved. Now you implement
+Your RFC from Exercise 3 has been approved. Now you implement
 it in `checkout-service`. You'll need:
 
 - The sample source repo: `checkout-service-incident-sourcecode/` (see its
@@ -30,9 +24,9 @@ it in `checkout-service`. You'll need:
 
 ## Task
 
-1. Give the AI coding assistant the RFC's sections 2 and 3 and ask it to
-   propose a concrete implementation plan against the real source files,
-   **before** writing any code. Check the plan against the RFC scope.
+1. Point the AI coding assistant to your RFC and ask it to propose a
+   concrete implementation plan against the real source files, **before**
+   writing any code. Check the plan against the RFC scope.
 2. **Write the regression test first, and watch it fail.** Add a
    query-count test using realistic cart sizes (4–11 items) that asserts
    cart retrieval doesn't issue one query per item. Run it against the
@@ -71,9 +65,8 @@ it in `checkout-service`. You'll need:
 
 ## Try these prompt angles
 
-- "Here are sections 2 and 3 of an approved RFC. Propose an implementation
-  plan against this codebase before writing any code. [paste RFC
-  sections]"
+- "Read sections 2 and 3 of my approved RFC in [path to your RFC]. Propose
+  an implementation plan against this codebase before writing any code."
 - "Write a test that fails if cart retrieval issues more than one SQL
   query for a cart with N items. Don't change the production code yet — I
   want to see the test fail first."
